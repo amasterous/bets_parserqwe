@@ -67,8 +67,11 @@ while True:
                             'author': m['author'],
                             'content': m['text'],
                             'time': m['date'],
+                            'zahod': '0',
+                            'type': '0',
                             'vk_link': m['vk_link'],
-                            'attachment_link': m['attachment_link']
+                            'attachment_link': m['attachment_link'],
+                            'game': '0',
                         }
                     )
         

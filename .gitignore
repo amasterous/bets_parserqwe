@@ -126,3 +126,4 @@ dmypy.json
 parser/config.py
 
 vk_config.v2.json
+test.db
