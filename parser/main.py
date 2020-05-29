@@ -22,14 +22,22 @@ def parse_posts(public_id, author, count=5):
         if 'is_pinned' in post:
             pin = 1
             continue
+        vk_link = 'https://vk.com/public%s?w=wall%s_%s' % (str(post['owner_id'])[1:], post['owner_id'], post['id'])
+        attachment_link = ''
+        if 'attachments' in post:
+            qwe = post['attachments'][0]['photo']['sizes'][-1]
 
+            attachment_link = qwe['url']
+            # print(attachment_link)
         content.append(
             {
                 'post_id': post['id'],
                 'author': author,
                 'text': post['text'],
                 'date': post['date'],
-                'pin': pin
+                'pin': pin,
+                'vk_link': vk_link,
+                'attachment_link': attachment_link,
             }
         )
 
@@ -58,7 +66,9 @@ while True:
                         {
                             'author': m['author'],
                             'content': m['text'],
-                            'time': m['date']
+                            'time': m['date'],
+                            'vk_link': m['vk_link'],
+                            'attachment_link': m['attachment_link']
                         }
                     )
         

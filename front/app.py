@@ -5,8 +5,7 @@ sys.path.append('../parser')
 # import db
 from app_init import app, Post, db
 import datetime
-DEBUG = True
-app.config['DEBUG'] = True
+# DEBUG = True
 
 
 CORS(app)
