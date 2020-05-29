@@ -19,6 +19,7 @@ posts = sqlalchemy.Table('post', metadata,
     sqlalchemy.Column('vk_link', sqlalchemy.TEXT()),
     sqlalchemy.Column('game', sqlalchemy.Integer()),
     sqlalchemy.Column('attachment_link', sqlalchemy.TEXT()),
+    sqlalchemy.Column('hltv_link', sqlalchemy.TEXT()),
     )
 
 post = sqlalchemy.Table('post', metadata, autoload=True, autoload_with=engine)

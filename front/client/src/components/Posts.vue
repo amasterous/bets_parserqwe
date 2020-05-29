@@ -75,11 +75,42 @@
                   <button v-if="post.type==0" type="button" class="btn btn-warning btn-sm" @click="changePostType(post.id, 'bet')">bet</button>
                   <!-- {{ post.type }} -->
                 </td>
+                <button type="button" class="btn btn-warning btn-sm" v-b-modal.hltv-modal @click="hltvform(post.id)">qwe</button>
             </tr>
           </tbody>
         </table>
       </div>
    </div> 
+
+
+
+   <b-modal ref="addHltvLinkModal"
+             id="hltv-modal"
+             title="Add hltv link"
+             hide-footer>
+      <b-form @submit="onSubmit" @reset="onReset" class="w-100">
+      <b-form-group id="form-title-group"
+                    label="Link:"
+                    label-for="form-link-input">
+          <b-form-input id="form-link-input"
+                        type="text"
+                        v-model="addHltvLinkForm.link"
+                        required
+                        placeholder="Enter link">
+          </b-form-input>
+          <!-- <b-form-input id="form-postid-input"
+                        type="hidden"
+                        v-model="addHltvLink.link"
+                        value="1">
+          </b-form-input> -->
+        </b-form-group>
+        <b-button type="submit" variant="primary">Submit</b-button>
+        <b-button type="reset" variant="danger">Reset</b-button>
+      </b-form>
+    </b-modal>
+
+
+
   </div>
 </template>
 
@@ -91,13 +122,34 @@ export default {
             title: '',
             game_type: '',
             posts: [],
-            addhltvlink: {
+            addHltvLinkForm: {
               postid: '',
               link: '',
             }
         };
     },
     methods: {
+        initForm() {
+          this.addHltvLinkForm.link = '';
+        },
+        hltvform(postid) {
+          this.addHltvLinkForm.postid = postid;
+        },
+        onSubmit(evt) {
+          evt.preventDefault();
+          this.$refs.addHltvLinkModal.hide();
+          const payload = {
+
+            link: this.addHltvLinkForm.link,
+          };
+          this.addLink(payload)
+          this.initForm() 
+        },
+        onReset(evt) {
+          evt.preventDefault();
+          this.$refs.addHltvLinkModal.hide();
+          this.initForm()
+        },
         getPostsType(type, changetype=true) {
           const path = `http://127.0.0.1:5000/${type}`
             axios.get(path)

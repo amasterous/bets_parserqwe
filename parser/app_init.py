@@ -24,3 +24,4 @@ class Post(db.Model):
     vk_link = db.Column(db.Text)
     game = db.Column(db.Integer)
     attachment_link = db.Column(db.Text)
+    hltv_link = db.Column(db.Text)
