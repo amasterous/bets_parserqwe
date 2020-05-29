@@ -1,0 +1,5 @@
+LOGIN = 'vklogin'
+PASSWORD = 'vkpassword'
+MALISH_ID = '-82408712'
+NORCH_ID = '-148500470'
+GAGARIN_ID = '-11921054'
