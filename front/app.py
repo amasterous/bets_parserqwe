@@ -61,7 +61,7 @@ def ping_pong():
 # возвращает только ставки
 @app.route('/bets')
 def all_bets():
-    res = Post.query.filter_by(type=1).order_by(Post.time.desc()).all()
+    res = Post.query.filter_by(type=1, game=0).order_by(Post.time.desc()).all()
     POSTS = makeposts(res)
     return jsonify({
         'status': 'success',
