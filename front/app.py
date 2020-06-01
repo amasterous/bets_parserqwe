@@ -1,4 +1,5 @@
 from flask import Flask, jsonify
+from flask import request
 from flask_cors import CORS
 import sys
 sys.path.append('../parser')
@@ -276,7 +277,19 @@ def bet_csgo(post_id):
     })
 
 
-
+@app.route('/posts/bet/csgo/hltv', methods=['POST'])
+def hltv_link():
+    data = request.get_json()
+    post = Post.query.filter_by(id=data.get('post_id')).first()
+    if post:
+        post.hltv_link = data.get('hltv_link')
+        result = "hltv link added"
+        db.session.commit()
+    
+    return jsonify({
+        'status': 'success', 
+        'result': result,
+    })
 
 
 
