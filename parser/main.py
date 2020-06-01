@@ -72,6 +72,7 @@ while True:
                             'vk_link': m['vk_link'],
                             'attachment_link': m['attachment_link'],
                             'game': '0',
+                            'hltv_link': 'null',
                         }
                     )
         

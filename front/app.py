@@ -35,6 +35,7 @@ def makeposts(data):
                 'vk_link': ins.vk_link,
                 'attachment_link': ins.attachment_link,
                 'game': ins.game,
+                'hltv_link': ins.hltv_link
             }
         )
     return POSTS
@@ -45,7 +46,7 @@ def makeposts(data):
 def index():
     # posts = Post.query.all()
     # for post in posts:
-    #     post.game=0
+    #     post.hltv_link='null'
     # db.session.commit()
     return jsonify({
         'status': 'success',
@@ -281,10 +282,14 @@ def bet_csgo(post_id):
 def hltv_link():
     data = request.get_json()
     post = Post.query.filter_by(id=data.get('post_id')).first()
+    print(data.get('post_id'))
+    print(data.get('hltv_link'))
     if post:
+        print('ifpost')
         post.hltv_link = data.get('hltv_link')
-        result = "hltv link added"
         db.session.commit()
+        print('added')
+        result = "hltv link added"
     
     return jsonify({
         'status': 'success', 

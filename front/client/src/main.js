@@ -2,8 +2,11 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import 'bootstrap/dist/css/bootstrap.css'
 import Vue from 'vue';
+import BootstrapVue from 'bootstrap-vue';
 import App from './App';
 import router from './router';
+
+Vue.use(BootstrapVue)
 
 Vue.config.productionTip = false;
 
