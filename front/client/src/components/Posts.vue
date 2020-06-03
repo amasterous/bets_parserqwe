@@ -4,6 +4,7 @@
       <div class="col-sm-10">
         <h1>{{ title }}</h1>
         <div>
+
           <a href="#" @click="getPostsType('posts')">posts</a>
           <a class="ml-1" href="#" @click="getPostsType('bets')">bets</a>
           <a class="ml-1" href="#" @click="getPostsType('trash')">ALL POSTs</a>
@@ -11,7 +12,7 @@
         <hr />
         <div v-if="title == 'bets'">
           <a href="#" @click="getPostsType('csgo', false)">csgo</a>
-          <a href="#" @click="getPostsType('dota', false)">dota 2</a>
+          <a class="ml-1" href="#" @click="getPostsType('dota', false)">dota 2</a>
         </div>
         <br />
         <br />
@@ -236,23 +237,24 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from 'axios';
+
 export default {
   data() {
     return {
-      title: "",
-      game_type: "",
+      title: '',
+      game_type: '',
       posts: [],
       addHltvLinkForm: {
-        postid: "",
-        link: ""
-      }
+        postid: '',
+        link: '',
+      },
     };
   },
   methods: {
     initForm() {
-      this.addHltvLinkForm.link = "";
-      this.addHltvLinkForm.postid = "";
+      this.addHltvLinkForm.link = '';
+      this.addHltvLinkForm.postid = '';
     },
     hltvform(postid) {
       this.addHltvLinkForm.postid = postid;
