@@ -70,26 +70,6 @@
                   />
                 </svg>
 
-                <!-- Картинка для ставки которая еще не определена -->
-                <svg
-                  v-if="post.zahod == '0'"
-                  class="bi bi-question-circle"
-                  width="2em"
-                  height="2em"
-                  viewBox="0 0 16 16"
-                  fill="#FFA500"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z"
-                    clip-rule="evenodd"
-                  />
-                  <path
-                    d="M5.25 6.033h1.32c0-.781.458-1.384 1.36-1.384.685 0 1.313.343 1.313 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.007.463h1.307v-.355c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.326 0-2.786.647-2.754 2.533zm1.562 5.516c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"
-                  />
-                </svg>
-
                 <!-- Картинка для ставки которая проиграла -->
                 <svg
                   v-if="post.zahod == '2'"
@@ -122,7 +102,7 @@
 
               <td v-if="title == 'bets'">
                 <button
-                  v-if="post.zahod == 0"
+                  v-if="post.zahod == 0 && post.game != 0"
                   type="button"
                   class="btn btn-warning btn-sm"
                   @click="changePostType(post.id, 'win')"
@@ -130,7 +110,7 @@
                   win
                 </button>
                 <button
-                  v-if="post.zahod == 2"
+                  v-if="post.zahod == 2 && post.game != 0"
                   type="button"
                   class="btn btn-warning btn-sm"
                   @click="changeBetType(post.id, 'win')"
@@ -138,7 +118,7 @@
                   win
                 </button>
                 <button
-                  v-if="post.zahod == 0"
+                  v-if="post.zahod == 0 && post.game != 0"
                   type="button"
                   class="btn btn-danger btn-sm"
                   @click="changeBetType(post.id, 'lose')"
@@ -146,7 +126,7 @@
                   lose
                 </button>
                 <button
-                  v-if="post.zahod == 1"
+                  v-if="post.zahod == 1 && post.game != 0"
                   type="button"
                   class="btn btn-danger btn-sm"
                   @click="changeBetType(post.id, 'lose')"
@@ -233,6 +213,30 @@
         <b-button type="reset" variant="danger">Reset</b-button>
       </b-form>
     </b-modal>
+
+    <b-modal ref="AddBetAmountModel" id="addbet-modal" title="add bet amount" hide-footer>
+      <b-form @submit="onSubmitHltvLink" @reset="onResetHltvLink" class="w-100">
+        <b-form-group id="form-title-group" label="Link:" label-for="form-bet-input">
+          <b-form-input
+            id="form-link-input"
+            type="text"
+            v-model="addBetAmountForm.amount"
+            required
+            placeholder="Enter Amount"
+          >
+          </b-form-input>
+          <b-form-input
+            id="form-postid-input"
+            class="invisible"
+            type="text"
+            v-model="addBetAmountForm.postid"
+          >
+          </b-form-input>
+        </b-form-group>
+        <b-button type="submit" variant="primary">Submit</b-button>
+        <b-button type="reset" variant="danger">Reset</b-button>
+      </b-form>
+    </b-modal>
   </div>
 </template>
 
@@ -249,17 +253,23 @@ export default {
         postid: '',
         link: '',
       },
+      addBetAmountForm: {
+        postid: '',
+        amount: '',
+      },
     };
   },
   methods: {
     initForm() {
       this.addHltvLinkForm.link = '';
       this.addHltvLinkForm.postid = '';
+      this.addBetAmountForm.postid = '';
+      this.addBetAmountForm.amount = '';
     },
     hltvform(postid) {
       this.addHltvLinkForm.postid = postid;
     },
-    onSubmit(evt) {
+    onSubmitHltvLink(evt) {
       evt.preventDefault();
       this.$refs.addHltvLinkModal.hide();
       const payload = {
@@ -281,7 +291,7 @@ export default {
           this.getPostsType("trash");
         });
     },
-    onReset(evt) {
+    onResetHltvLink(evt) {
       evt.preventDefault();
       this.$refs.addHltvLinkModal.hide();
       this.initForm();

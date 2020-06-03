@@ -11,7 +11,7 @@ vk_session.auth()
 vk = vk_session.get_api()
 
 
-def parse_posts(public_id, author, count=5):
+def parse_posts(public_id, author, count=50):
     content = []
     posts = vk.wall.get(
         owner_id=public_id,
