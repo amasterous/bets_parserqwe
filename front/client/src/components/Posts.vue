@@ -297,6 +297,9 @@ export default {
           if (type == "dota" || type == "csgo") {
             this.game_type = type;
           }
+          else {
+            this.game_type = '';
+          }
           this.posts = res.data.posts;
           console.log(path);
         })
