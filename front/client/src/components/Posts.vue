@@ -3,9 +3,11 @@
     <div class="row">
       <div class="col-sm-10">
         <h1>{{ title }}</h1>
+        <div>
         <a href="#" @click="getPostsType('posts')">posts</a>
-        <a href="#" @click="getPostsType('bets')">bets</a>
-        <a href="#" @click="getPostsType('trash')">ALL POSTs</a>
+        <a class="ml-1" href="#" @click="getPostsType('bets')">bets</a>
+        <a class="ml-1" href="#" @click="getPostsType('trash')">ALL POSTs</a>
+        </div>
         <hr>
         <div v-if="title=='bets'">
           <a href="#" @click="getPostsType('csgo', false) ">csgo</a>
@@ -225,8 +227,8 @@ export default {
     },
     created() {
         this.getPostsType('trash');
-        this.title = 'trash'
-    }
+        this.title = 'trash';
+  },
 };
 
 </script>

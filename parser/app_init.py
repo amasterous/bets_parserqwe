@@ -8,6 +8,7 @@ app.config.from_object(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///../test.db'
 app.config['JSON_AS_ASCII'] = False
 app.config['DEBUG'] = True
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False 
 CORS(app)
 db = SQLAlchemy(app)
 
