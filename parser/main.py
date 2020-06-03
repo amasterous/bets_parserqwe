@@ -1,5 +1,5 @@
 import vk_api
-import config 
+import config
 import db
 import time
 import os
@@ -10,11 +10,12 @@ vk_session.auth()
 
 vk = vk_session.get_api()
 
+
 def parse_posts(public_id, author, count=5):
     content = []
     posts = vk.wall.get(
-        owner_id = public_id,
-        count = count,
+        owner_id=public_id,
+        count=count,
     )
     for post in posts['items']:
         pin = 0
@@ -22,7 +23,8 @@ def parse_posts(public_id, author, count=5):
         if 'is_pinned' in post:
             pin = 1
             continue
-        vk_link = 'https://vk.com/public%s?w=wall%s_%s' % (str(post['owner_id'])[1:], post['owner_id'], post['id'])
+        vk_link = 'https://vk.com/public%s?w=wall%s_%s' % (
+            str(post['owner_id'])[1:], post['owner_id'], post['id'])
         attachment_link = ''
         if 'attachments' in post:
             qwe = post['attachments'][0]['photo']['sizes'][-1]
@@ -41,8 +43,8 @@ def parse_posts(public_id, author, count=5):
             }
         )
 
-    
-    return content 
+    return content
+
 
 while True:
     os.system("cls")
@@ -59,7 +61,8 @@ while True:
         values_list = []
         for posts in massiv:
             for m in posts:
-                isset_check = db.sqlalchemy.select([db.post]).where(db.post.columns.time == m['date'])
+                isset_check = db.sqlalchemy.select([db.post]).where(
+                    db.post.columns.time == m['date'])
                 res = db.connection.execute(isset_check).fetchall()
                 if not res:
                     values_list.append(
@@ -75,7 +78,7 @@ while True:
                             'hltv_link': 'null',
                         }
                     )
-        
+
         # print(values_list)
         if values_list:
             result = db.connection.execute(query, values_list)
@@ -87,7 +90,6 @@ while True:
 
     db_insert(posts)
     time.sleep(180)
-
 
 
 # print(malish_posts)
