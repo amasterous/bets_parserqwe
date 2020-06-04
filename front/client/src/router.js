@@ -3,6 +3,7 @@ import Router from 'vue-router';
 // import Ping from './components/Ping.vue';
 import Posts from './components/Posts.vue';
 import HelloWorld from './components/HelloWorld.vue';
+import Test from './components/Test.vue';
 
 Vue.use(Router);
 
@@ -13,6 +14,11 @@ export default new Router({
       path: '/',
       name: 'Posts',
       component: Posts,
+    },
+    {
+      path: '/test',
+      name: 'Test',
+      component: Test,
     },
     // {
     //   path: '/ping',
@@ -25,5 +31,5 @@ export default new Router({
       component: HelloWorld,
     },
   ],
-  mode: 'hash',
+  mode: 'history',
 });

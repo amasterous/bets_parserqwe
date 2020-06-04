@@ -29,7 +29,7 @@
             <tbody>
               <tr v-for="post in posts" v-bind:key="post.time">
                 <td>
-                  <a :href="post.vk_link">{{ post.author }}</a>
+                  <a :href="post.vk_link">{{ post.author }}</a><br><p v-if="post.bet != 'null'">{{post.bet}}</p>
                 </td>
                 <td>
                   {{ post.content }}
@@ -38,6 +38,7 @@
                     v-if="post.attachment_link != ''"
                     v-bind:src="post.attachment_link"
                     class="img-fluid"
+                    style="max-width: 320px; max-height:240px;"
                   />
                   <hr>
                   
@@ -54,7 +55,7 @@
                   <button
                     v-if="post.zahod == 0 && post.game != 0"
                     type="button"
-                    class="btn btn-danger btn-sm"
+                    class="btn btn-danger btn-sm ml-1"
                     @click="changeBetType(post.id, 'lose')"
                   >
                     lose
@@ -71,7 +72,7 @@
                     <button
                       v-if="post.game == 0"
                       type="button"
-                      class="btn btn-danger btn-sm"
+                      class="btn btn-danger btn-sm ml-1"
                       @click="changeGameType(post.id, 'csgo')"
                     >
                       csgo
@@ -90,28 +91,28 @@
                   <button
                     v-if="post.type == 0"
                     type="button"
-                    class="btn btn-warning btn-sm"
+                    class="btn btn-warning btn-sm ml-1"
                     @click="changePostType(post.id, 'bet')"
                   >
                     bet
                   </button>
                   <!-- {{ post.type }} -->
                 </span>
-                <span v-if="post.hltv_link == 'null' && post.type == '1' && game_type == 'csgo'">
+                <span v-if="post.hltv_link == 'null' && post.type == '1' && game_type == 'csgo'" class="float-md-right">
                   <button
                     type="button"
-                    class="btn btn-info btn-sm"
+                    class="btn btn-info btn-sm ml-1"
                     v-b-modal.hltv-modal
                     @click="hltvform(post.id)"
                   >
                   hltv 
                   </button>
                 </span>
-                <span v-else-if="post.hltv_link != 'null'">
+                <!-- <span v-else-if="post.hltv_link != 'null'">
                   <a :href="post.hltv_link">hltv</a>
-                </span>
+                </span> -->
 
-                <span v-if="post.type == '1' && post.bet == 'null'">
+                <span v-if="post.type == '1' && post.bet == 'null'" class="float-md-right">
 
                   <button
                     type="button"
@@ -181,7 +182,11 @@
                     />
                   </svg>
                 </div>
+                
+                <div v-if="post.hltv_link != 'null'">
+                  <a :href="post.hltv_link">hltv</a>
 
+                </div>
                 <!-- <td>{{ post.zahod }}</td> -->
 
                 </td>
@@ -193,7 +198,7 @@
       </div>
 
     <b-modal ref="addHltvLinkModal" id="hltv-modal" title="Add hltv link" hide-footer>
-      <b-form @submit="onSubmit" @reset="onReset" class="w-100">
+      <b-form @submit="onSubmitHltvLink" @reset="onResetHltvLink" class="w-100">
         <b-form-group id="form-title-group" label="Link:" label-for="form-link-input">
           <b-form-input
             id="form-link-input"
@@ -216,11 +221,11 @@
       </b-form>
     </b-modal>
 
-    <b-modal ref="AddBetAmountModal" id="addbet-modal" title="add bet amount" hide-footer>
+    <b-modal ref="addBetAmountModal" id="addbet-modal" title="add bet amount" hide-footer>
       <b-form @submit="onSubmitBetAmount" @reset="onResetBetAmount" class="w-100">
-        <b-form-group id="form-title-group" label="Link:" label-for="form-bet-input">
+        <b-form-group id="form-title-group" label="Bet amount:" label-for="form-bet-input">
           <b-form-input
-            id="form-link-input"
+            id="form-betamount-input"
             type="text"
             v-model="addBetAmountForm.amount"
             required
@@ -282,6 +287,8 @@ export default {
         post_id: this.addBetAmountForm.postid,
         amount: this.addBetAmountForm.amount,
       }
+      this.addBetAmount(payload);
+      this.initForm();
     },
     addBetAmount(payload) {
       const path = 'http://127.0.0.1:5000/posts/bet/amount'
@@ -310,7 +317,7 @@ export default {
       axios
         .post(path, payload)
         .then(() => {
-          this.getPostsType("trash");
+          this.getPostsType("csgo");
         })
         .catch((error) => {
           console.log(error);
@@ -337,6 +344,7 @@ export default {
           }
           if (type == "dota" || type == "csgo") {
             this.game_type = type;
+            this.title = 'bets'
           }
           else {
             this.game_type = '';

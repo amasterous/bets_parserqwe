@@ -35,7 +35,8 @@ def makeposts(data):
                 'vk_link': ins.vk_link,
                 'attachment_link': ins.attachment_link,
                 'game': ins.game,
-                'hltv_link': ins.hltv_link
+                'hltv_link': ins.hltv_link,
+                'coef': ins.coef,
             }
         )
     return POSTS
@@ -46,7 +47,7 @@ def makeposts(data):
 def index():
     posts = Post.query.all()
     for post in posts:
-        post.bet = 'null'
+        post.coef = 'null'
     db.session.commit()
     return jsonify({
         'status': 'success',

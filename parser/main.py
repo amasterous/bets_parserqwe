@@ -77,6 +77,7 @@ while True:
                             'game': '0',
                             'hltv_link': 'null',
                             'bet': 'null',
+                            'coef': 'null',
                         }
                     )
 

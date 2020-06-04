@@ -26,3 +26,4 @@ class Post(db.Model):
     game = db.Column(db.Integer)
     attachment_link = db.Column(db.Text)
     hltv_link = db.Column(db.Text)
+    coef = db.Column(db.Text)
