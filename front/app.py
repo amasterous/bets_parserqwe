@@ -44,10 +44,10 @@ def makeposts(data):
 # функциональный машрурт
 @app.route('/')
 def index():
-    # posts = Post.query.all()
-    # for post in posts:
-    #     post.hltv_link='null'
-    # db.session.commit()
+    posts = Post.query.all()
+    for post in posts:
+        post.bet = 'null'
+    db.session.commit()
     return jsonify({
         'status': 'success',
         'context': 'hello',
@@ -296,6 +296,21 @@ def hltv_link():
         db.session.commit()
         print('added')
         result = "hltv link added"
+
+    return jsonify({
+        'status': 'success',
+        'result': result,
+    })
+
+
+@app.route('/posts/bet/amount', methods=['POST'])
+def bet_amount():
+    data = request.get_json()
+    post = Post.query.filter_by(id=data.get('post_id')).first()
+    if post:
+        post.bet = data.get('amount')
+        db.session.commit()
+        result = "bet amount added"
 
     return jsonify({
         'status': 'success',

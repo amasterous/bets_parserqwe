@@ -16,179 +16,181 @@
         </div>
         <br />
         <br />
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              <th scope="col">author</th>
-              <th scope="col">content</th>
-              <th scope="col">time</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="post in posts" v-bind:key="post.time">
-              <td>
-                <a :href="post.vk_link">{{ post.author }}</a>
-              </td>
-              <td>
-                {{ post.content }}
-                <br />
-                <img
-                  v-if="post.attachment_link != ''"
-                  v-bind:src="post.attachment_link"
-                  class="img-fluid"
-                />
-              </td>
-              <td>{{ post.time }}</td>
-              <td>{{ post.bet }}</td>
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">author</th>
+                <th scope="col">content</th>
+                <th scope="col">time</th>
+                <th scope="col">other</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="post in posts" v-bind:key="post.time">
+                <td>
+                  <a :href="post.vk_link">{{ post.author }}</a>
+                </td>
+                <td>
+                  {{ post.content }}
+                  <br />
+                  <img
+                    v-if="post.attachment_link != ''"
+                    v-bind:src="post.attachment_link"
+                    class="img-fluid"
+                  />
+                  <hr>
+                  
 
-              <!-- Картинка для ставки которая выиграла -->
-              <div v-if="title == 'bets'">
-                <svg
-                  v-if="post.zahod == '1'"
-                  class="bi bi-plus-square"
-                  width="2em"
-                  height="2em"
-                  viewBox="0 0 16 16"
-                  fill="green"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M8 3.5a.5.5 0 01.5.5v4a.5.5 0 01-.5.5H4a.5.5 0 010-1h3.5V4a.5.5 0 01.5-.5z"
-                    clip-rule="evenodd"
-                  />
-                  <path
-                    fill-rule="evenodd"
-                    d="M7.5 8a.5.5 0 01.5-.5h4a.5.5 0 010 1H8.5V12a.5.5 0 01-1 0V8z"
-                    clip-rule="evenodd"
-                  />
-                  <path
-                    fill-rule="evenodd"
-                    d="M14 1H2a1 1 0 00-1 1v12a1 1 0 001 1h12a1 1 0 001-1V2a1 1 0 00-1-1zM2 0a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V2a2 2 0 00-2-2H2z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-
-                <!-- Картинка для ставки которая проиграла -->
-                <svg
-                  v-if="post.zahod == '2'"
-                  class="bi bi-x-circle"
-                  width="2em"
-                  height="2em"
-                  viewBox="0 0 16 16"
-                  fill="red"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z"
-                    clip-rule="evenodd"
-                  />
-                  <path
-                    fill-rule="evenodd"
-                    d="M11.854 4.146a.5.5 0 010 .708l-7 7a.5.5 0 01-.708-.708l7-7a.5.5 0 01.708 0z"
-                    clip-rule="evenodd"
-                  />
-                  <path
-                    fill-rule="evenodd"
-                    d="M4.146 4.146a.5.5 0 000 .708l7 7a.5.5 0 00.708-.708l-7-7a.5.5 0 00-.708 0z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              </div>
-
-              <!-- <td>{{ post.zahod }}</td> -->
-
-              <td v-if="title == 'bets'">
-                <button
-                  v-if="post.zahod == 0 && post.game != 0"
-                  type="button"
-                  class="btn btn-warning btn-sm"
-                  @click="changePostType(post.id, 'win')"
-                >
-                  win
-                </button>
-                <button
-                  v-if="post.zahod == 2 && post.game != 0"
-                  type="button"
-                  class="btn btn-warning btn-sm"
-                  @click="changeBetType(post.id, 'win')"
-                >
-                  win
-                </button>
-                <button
-                  v-if="post.zahod == 0 && post.game != 0"
-                  type="button"
-                  class="btn btn-danger btn-sm"
-                  @click="changeBetType(post.id, 'lose')"
-                >
-                  lose
-                </button>
-                <button
-                  v-if="post.zahod == 1 && post.game != 0"
-                  type="button"
-                  class="btn btn-danger btn-sm"
-                  @click="changeBetType(post.id, 'lose')"
-                >
-                  lose
-                </button>
-                <div>
+                <span v-if="title == 'bets'">
                   <button
-                    v-if="post.game == 0"
+                    v-if="post.zahod == 0 && post.game != 0"
                     type="button"
-                    class="btn btn-danger btn-sm"
-                    @click="changeGameType(post.id, 'dota')"
+                    class="btn btn-warning btn-sm"
+                    @click="changePostType(post.id, 'win')"
                   >
-                    dota
+                    win
                   </button>
                   <button
-                    v-if="post.game == 0"
+                    v-if="post.zahod == 0 && post.game != 0"
                     type="button"
                     class="btn btn-danger btn-sm"
-                    @click="changeGameType(post.id, 'csgo')"
+                    @click="changeBetType(post.id, 'lose')"
                   >
-                    csgo
+                    lose
                   </button>
-                </div>
-              </td>
-              <td v-if="title == 'trash'">
-                <button
-                  v-if="post.type == 0"
-                  type="button"
-                  class="btn btn-danger btn-sm"
-                  @click="changePostType(post.id, 'post')"
-                >
-                  post
-                </button>
-                <button
-                  v-if="post.type == 0"
-                  type="button"
-                  class="btn btn-warning btn-sm"
-                  @click="changePostType(post.id, 'bet')"
-                >
+                  <span>
+                    <button
+                      v-if="post.game == 0"
+                      type="button"
+                      class="btn btn-danger btn-sm"
+                      @click="changeGameType(post.id, 'dota')"
+                    >
+                      dota
+                    </button>
+                    <button
+                      v-if="post.game == 0"
+                      type="button"
+                      class="btn btn-danger btn-sm"
+                      @click="changeGameType(post.id, 'csgo')"
+                    >
+                      csgo
+                    </button>
+                  </span>
+                </span>
+                <span v-if="title == 'trash'">
+                  <button
+                    v-if="post.type == 0"
+                    type="button"
+                    class="btn btn-danger btn-sm"
+                    @click="changePostType(post.id, 'post')"
+                  >
+                    post
+                  </button>
+                  <button
+                    v-if="post.type == 0"
+                    type="button"
+                    class="btn btn-warning btn-sm"
+                    @click="changePostType(post.id, 'bet')"
+                  >
+                    bet
+                  </button>
+                  <!-- {{ post.type }} -->
+                </span>
+                <span v-if="post.hltv_link == 'null' && post.type == '1' && game_type == 'csgo'">
+                  <button
+                    type="button"
+                    class="btn btn-info btn-sm"
+                    v-b-modal.hltv-modal
+                    @click="hltvform(post.id)"
+                  >
+                  hltv 
+                  </button>
+                </span>
+                <span v-else-if="post.hltv_link != 'null'">
+                  <a :href="post.hltv_link">hltv</a>
+                </span>
+
+                <span v-if="post.type == '1' && post.bet == 'null'">
+
+                  <button
+                    type="button"
+                    class="btn btn-info btn-sm"
+                    v-b-modal.addbet-modal
+                    @click="betamountform(post.id)"
+                  >
                   bet
-                </button>
-                <!-- {{ post.type }} -->
-              </td>
-              <td v-if="post.hltv_link == 'null' && title == 'bets' && game_type == 'csgo'">
-                <button
-                  type="button"
-                  class="btn btn-warning btn-sm"
-                  v-b-modal.hltv-modal
-                  @click="hltvform(post.id)"
-                >
-                  qwe
-                </button>
-              </td>
-              <td v-else-if="post.hltv_link != 'null'">
-                <a :href="post.hltv_link">hltv</a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                  </button>
+
+                </span>
+                </td>
+                <td>{{ post.time }}</td>
+                <td>
+                <!-- Картинка для ставки которая выиграла -->
+                <div v-if="title == 'bets'">
+                  <svg
+                    v-if="post.zahod == '1'"
+                    class="bi bi-plus-square"
+                    width="2em"
+                    height="2em"
+                    viewBox="0 0 16 16"
+                    fill="green"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M8 3.5a.5.5 0 01.5.5v4a.5.5 0 01-.5.5H4a.5.5 0 010-1h3.5V4a.5.5 0 01.5-.5z"
+                      clip-rule="evenodd"
+                    />
+                    <path
+                      fill-rule="evenodd"
+                      d="M7.5 8a.5.5 0 01.5-.5h4a.5.5 0 010 1H8.5V12a.5.5 0 01-1 0V8z"
+                      clip-rule="evenodd"
+                    />
+                    <path
+                      fill-rule="evenodd"
+                      d="M14 1H2a1 1 0 00-1 1v12a1 1 0 001 1h12a1 1 0 001-1V2a1 1 0 00-1-1zM2 0a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V2a2 2 0 00-2-2H2z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+
+                  <!-- Картинка для ставки которая проиграла -->
+                  <svg
+                    v-if="post.zahod == '2'"
+                    class="bi bi-x-circle"
+                    width="2em"
+                    height="2em"
+                    viewBox="0 0 16 16"
+                    fill="red"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z"
+                      clip-rule="evenodd"
+                    />
+                    <path
+                      fill-rule="evenodd"
+                      d="M11.854 4.146a.5.5 0 010 .708l-7 7a.5.5 0 01-.708-.708l7-7a.5.5 0 01.708 0z"
+                      clip-rule="evenodd"
+                    />
+                    <path
+                      fill-rule="evenodd"
+                      d="M4.146 4.146a.5.5 0 000 .708l7 7a.5.5 0 00.708-.708l-7-7a.5.5 0 00-.708 0z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                </div>
+
+                <!-- <td>{{ post.zahod }}</td> -->
+
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        </div>
       </div>
-    </div>
 
     <b-modal ref="addHltvLinkModal" id="hltv-modal" title="Add hltv link" hide-footer>
       <b-form @submit="onSubmit" @reset="onReset" class="w-100">
@@ -214,8 +216,8 @@
       </b-form>
     </b-modal>
 
-    <b-modal ref="AddBetAmountModel" id="addbet-modal" title="add bet amount" hide-footer>
-      <b-form @submit="onSubmitHltvLink" @reset="onResetHltvLink" class="w-100">
+    <b-modal ref="AddBetAmountModal" id="addbet-modal" title="add bet amount" hide-footer>
+      <b-form @submit="onSubmitBetAmount" @reset="onResetBetAmount" class="w-100">
         <b-form-group id="form-title-group" label="Link:" label-for="form-bet-input">
           <b-form-input
             id="form-link-input"
@@ -237,6 +239,7 @@
         <b-button type="reset" variant="danger">Reset</b-button>
       </b-form>
     </b-modal>
+  <!-- </div> -->
   </div>
 </template>
 
@@ -269,6 +272,29 @@ export default {
     hltvform(postid) {
       this.addHltvLinkForm.postid = postid;
     },
+    betamountform(postid) {
+      this.addBetAmountForm.postid = postid;
+    },
+    onSubmitBetAmount(evt) {
+      evt.preventDefault();
+      this.$refs.addBetAmountModal.hide()
+      const payload = {
+        post_id: this.addBetAmountForm.postid,
+        amount: this.addBetAmountForm.amount,
+      }
+    },
+    addBetAmount(payload) {
+      const path = 'http://127.0.0.1:5000/posts/bet/amount'
+      axios
+        .post(path, payload)
+        .then(() => {
+          this.getPostsType("bets")
+        })
+        .catch((error) => {
+          console.log(error);
+          this.getPostsType("trash");
+        })
+    },
     onSubmitHltvLink(evt) {
       evt.preventDefault();
       this.$refs.addHltvLinkModal.hide();
@@ -286,10 +312,15 @@ export default {
         .then(() => {
           this.getPostsType("trash");
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
           this.getPostsType("trash");
         });
+    },
+    onResetBetAmount(evt) {
+      evt.preventDefault();
+      this.$refs.addBetAmountModal.hide();
+      this.initForm();
     },
     onResetHltvLink(evt) {
       evt.preventDefault();
@@ -313,7 +344,7 @@ export default {
           this.posts = res.data.posts;
           console.log(path);
         })
-        .catch(error => {
+        .catch((error) => {
           console.error(error);
         });
     },
@@ -324,7 +355,7 @@ export default {
         .then(() => {
           this.getPostsType("bets");
         })
-        .catch(error => {
+        .catch((error) => {
           console.error(error);
           this.getPostsType("bets");
         });
@@ -336,7 +367,7 @@ export default {
         .then(() => {
           this.getPostsType("trash");
         })
-        .catch(error => {
+        .catch((error) => {
           console.error(error);
           this.getPostsType("trash");
         });
@@ -348,19 +379,11 @@ export default {
         .then(() => {
           this.getPostsType("bets");
         })
-        .catch(error => {
+        .catch((error) => {
           console.error(error);
           this.getPostsType("bets");
         });
-    }
-    // onSubmit(evt) {
-    //   evt.preventDefault();
-    //   this.$refs.addhltvlink.hide();
-    //   const payload = {
-    //     id
-    //   }
-
-    // },
+    },
   },
   created() {
     this.getPostsType("trash");

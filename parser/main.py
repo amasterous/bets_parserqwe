@@ -76,6 +76,7 @@ while True:
                             'attachment_link': m['attachment_link'],
                             'game': '0',
                             'hltv_link': 'null',
+                            'bet': 'null',
                         }
                     )
 
