@@ -21,7 +21,7 @@ def makeposts(data):
     POSTS = []
     for ins in data:
         time = datetime.datetime.fromtimestamp(ins.time)
-        time = time.strftime('%Y-%d-%m %H:%M:%S')
+        time = time.strftime('%d-%m-%Y %H:%M:%S')
 
         POSTS.append(
             {
@@ -289,13 +289,9 @@ def bet_csgo(post_id):
 def hltv_link():
     data = request.get_json()
     post = Post.query.filter_by(id=data.get('post_id')).first()
-    print(data.get('post_id'))
-    print(data.get('hltv_link'))
     if post:
-        print('ifpost')
         post.hltv_link = data.get('hltv_link')
         db.session.commit()
-        print('added')
         result = "hltv link added"
 
     return jsonify({
@@ -313,6 +309,21 @@ def bet_amount():
         db.session.commit()
         result = "bet amount added"
 
+    return jsonify({
+        'status': 'success',
+        'result': result,
+    })
+
+
+@app.route('/posts/bet/coef', methods=['POST'])
+def bet_coef():
+    data = request.get_json()
+    post = Post.query.filter_by(id=data.get('post_id')).first()
+    if post:
+        post.coef = data.get('coef')
+        db.session.commit()
+        result = "bet coef added"
+    
     return jsonify({
         'status': 'success',
         'result': result,

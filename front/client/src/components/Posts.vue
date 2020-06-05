@@ -29,7 +29,11 @@
             <tbody>
               <tr v-for="post in posts" v-bind:key="post.time">
                 <td>
-                  <a :href="post.vk_link">{{ post.author }}</a><br><p v-if="post.bet != 'null'">{{post.bet}}</p>
+                  <a :href="post.vk_link">{{ post.author }}</a>
+                  <br>
+                  <p v-if="post.bet != 'null'">{{post.bet}}</p>
+                  <br>
+                  <p v-if="post.coef != 'null'">{{post.coef}}</p>
                 </td>
                 <td>
                   {{ post.content }}
@@ -47,7 +51,7 @@
                   <button
                     v-if="post.zahod == 0 && post.game != 0"
                     type="button"
-                    class="btn btn-warning btn-sm"
+                    class="btn btn-success btn-sm"
                     @click="changePostType(post.id, 'win')"
                   >
                     win
@@ -56,7 +60,7 @@
                     v-if="post.zahod == 0 && post.game != 0"
                     type="button"
                     class="btn btn-danger btn-sm ml-1"
-                    @click="changeBetType(post.id, 'lose')"
+                    @click="changePostType(post.id, 'lose')"
                   >
                     lose
                   </button>
@@ -112,7 +116,7 @@
                   <a :href="post.hltv_link">hltv</a>
                 </span> -->
 
-                <span v-if="post.type == '1' && post.bet == 'null'" class="float-md-right">
+                <span v-if="post.type == '1' && post.bet == 'null'" class="ml-1 float-md-right">
 
                   <button
                     type="button"
@@ -121,6 +125,18 @@
                     @click="betamountform(post.id)"
                   >
                   bet
+                  </button>
+
+                </span>
+                <span v-if="post.type != '0' && post.coef == 'null'" class="float-md-right">
+
+                  <button
+                    type="button"
+                    class="btn btn-info btn-sm"
+                    v-b-modal.add-coef-modal
+                    @click="addcoefform(post.id)"
+                  >
+                 coef 
                   </button>
 
                 </span>
@@ -221,6 +237,30 @@
       </b-form>
     </b-modal>
 
+    <b-modal ref="addCoefModal" id="add-coef-modal" title="Add coefficient for bet" hide-footer>
+      <b-form @submit="onSubmitAddCoef" @reset="onResetAddCoef" class="w-100">
+        <b-form-group id="form-title-group" label="Coef:" label-for="form-coef-input">
+          <b-form-input
+            id="form-coef-input"
+            type="text"
+            v-model="addCoefForm.coef"
+            required
+            placeholder="Enter Coef"
+          >
+          </b-form-input>
+          <b-form-input
+            id="form-postid-input"
+            class="invisible"
+            type="text"
+            v-model="addCoefForm.postid"
+          >
+          </b-form-input>
+        </b-form-group>
+        <b-button type="submit" variant="primary">Submit</b-button>
+        <b-button type="reset" variant="danger">Reset</b-button>
+      </b-form>
+    </b-modal>
+
     <b-modal ref="addBetAmountModal" id="addbet-modal" title="add bet amount" hide-footer>
       <b-form @submit="onSubmitBetAmount" @reset="onResetBetAmount" class="w-100">
         <b-form-group id="form-title-group" label="Bet amount:" label-for="form-bet-input">
@@ -248,154 +288,4 @@
   </div>
 </template>
 
-<script>
-import axios from 'axios';
-
-export default {
-  data() {
-    return {
-      title: '',
-      game_type: '',
-      posts: [],
-      addHltvLinkForm: {
-        postid: '',
-        link: '',
-      },
-      addBetAmountForm: {
-        postid: '',
-        amount: '',
-      },
-    };
-  },
-  methods: {
-    initForm() {
-      this.addHltvLinkForm.link = '';
-      this.addHltvLinkForm.postid = '';
-      this.addBetAmountForm.postid = '';
-      this.addBetAmountForm.amount = '';
-    },
-    hltvform(postid) {
-      this.addHltvLinkForm.postid = postid;
-    },
-    betamountform(postid) {
-      this.addBetAmountForm.postid = postid;
-    },
-    onSubmitBetAmount(evt) {
-      evt.preventDefault();
-      this.$refs.addBetAmountModal.hide()
-      const payload = {
-        post_id: this.addBetAmountForm.postid,
-        amount: this.addBetAmountForm.amount,
-      }
-      this.addBetAmount(payload);
-      this.initForm();
-    },
-    addBetAmount(payload) {
-      const path = 'http://127.0.0.1:5000/posts/bet/amount'
-      axios
-        .post(path, payload)
-        .then(() => {
-          this.getPostsType("bets")
-        })
-        .catch((error) => {
-          console.log(error);
-          this.getPostsType("trash");
-        })
-    },
-    onSubmitHltvLink(evt) {
-      evt.preventDefault();
-      this.$refs.addHltvLinkModal.hide();
-      const payload = {
-        post_id: this.addHltvLinkForm.postid,
-        hltv_link: this.addHltvLinkForm.link
-      };
-      this.addLink(payload);
-      this.initForm();
-    },
-    addLink(payload) {
-      const path = "http://127.0.0.1:5000/posts/bet/csgo/hltv";
-      axios
-        .post(path, payload)
-        .then(() => {
-          this.getPostsType("csgo");
-        })
-        .catch((error) => {
-          console.log(error);
-          this.getPostsType("trash");
-        });
-    },
-    onResetBetAmount(evt) {
-      evt.preventDefault();
-      this.$refs.addBetAmountModal.hide();
-      this.initForm();
-    },
-    onResetHltvLink(evt) {
-      evt.preventDefault();
-      this.$refs.addHltvLinkModal.hide();
-      this.initForm();
-    },
-    getPostsType(type, changetype = true) {
-      const path = `http://127.0.0.1:5000/${type}`;
-      axios
-        .get(path)
-        .then(res => {
-          if (changetype == true) {
-            this.title = type;
-          }
-          if (type == "dota" || type == "csgo") {
-            this.game_type = type;
-            this.title = 'bets'
-          }
-          else {
-            this.game_type = '';
-          }
-          this.posts = res.data.posts;
-          console.log(path);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    },
-    changeGameType(postID, type) {
-      const path = `http://127.0.0.1:5000/posts/bet/${type}/${postID}`;
-      axios
-        .get(path)
-        .then(() => {
-          this.getPostsType("bets");
-        })
-        .catch((error) => {
-          console.error(error);
-          this.getPostsType("bets");
-        });
-    },
-    changePostType(postID, type) {
-      const path = `http://127.0.0.1:5000/posts/${type}/${postID}`;
-      axios
-        .get(path)
-        .then(() => {
-          this.getPostsType("trash");
-        })
-        .catch((error) => {
-          console.error(error);
-          this.getPostsType("trash");
-        });
-    },
-    changeBetType(postID, type) {
-      const path = `http://127.0.0.1:5000/posts/${type}/${postID}`;
-      axios
-        .get(path)
-        .then(() => {
-          this.getPostsType("bets");
-        })
-        .catch((error) => {
-          console.error(error);
-          this.getPostsType("bets");
-        });
-    },
-  },
-  created() {
-    this.getPostsType("trash");
-    this.title = "trash";
-  }
-};
-</script>
+<script src="./scripts/posts.js"></script>
