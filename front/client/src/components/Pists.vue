@@ -1,5 +1,5 @@
 <template>
-    <div id="qwe">
+    <div>
       <h1><center>Bets Parser</center></h1>
       <hr>
       <Test />
@@ -9,12 +9,6 @@
 <script>
 import Test from '@/components/posts/Test'
 export default {
-    name: 'qwe',
-    data() {
-        return {
-            
-        }
-    },
     components: {
         Test,
     }

@@ -2,10 +2,15 @@
     <tr>
     <td>
       <a :href="post.vk_link">{{ post.author }}</a>
-      <br>
-      <p v-if="post.bet != 'null'">{{post.bet}}</p>
-      <br>
-      <p v-if="post.coef != 'null'">{{post.coef}}</p>
+      <div v-if="post.coef == 'null' && post.type != 0">
+        <label-edit :text="coefChange.coef" id="labeledit1" v-on:text-updated-blur="textUpdated" placeholder="Enter some text"></label-edit>
+
+        <button @click="idupdate(post.id)">update coef</button>
+      </div>
+        <br>
+        <p v-if="post.bet != 'null'">{{post.bet}}</p>
+        <br>
+        <p v-if="post.coef != 'null'">{{post.coef}}</p>
     </td>
     <td>
       {{ post.content }}
@@ -173,7 +178,6 @@
     
     <div v-if="post.hltv_link != 'null'">
       <a :href="post.hltv_link">hltv</a>
-
     </div>
     <!-- <td>{{ post.zahod }}</td> -->
 
@@ -183,6 +187,7 @@
 
 <script>
 import axios from 'axios';
+import LabelEdit from 'label-edit';
 export default {
   props: {
     post: {
@@ -191,6 +196,90 @@ export default {
     },
     title:{},
     game_type:{},
+    getPostsType: {},
+    game_type: {},
+  },
+  data () {
+    return {
+      coefChange: {
+        coef: '',
+        id: '',
+      }
+    }
+  },
+  methods: {
+    initForm(){
+      this.coefChange.coef='';
+      this.coefChange.id='';
+    },
+    textUpdated: function(text){
+      // console.log(text)
+      // this.qwe = text;
+      console.log(text);
+      this.coefChange.coef = text;
+      console.log(this.coefChange.coef)
+    },
+    idupdate(id) { 
+      console.log('activated')
+      this.coefChange.id = id;
+      const payload = {
+        post_id: this.coefChange.id,
+        coef: this.coefChange.coef,
+      }
+      this.addCoef(payload)
+      this.initForm()
+    },
+    addCoef(payload) {
+      const path = 'http://127.0.0.1:5000/posts/bet/coef'
+      axios
+        .post(path, payload)
+        .then(() => {
+          if (this.game_type == ''){
+          this.getPostsType("bets")
+          }
+          else {
+            console.log(this.game_type)
+            this.getPostsType(this.game_type)
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          this.getPostsType("trash");
+        })
+    },
+    changeGameType(postID, type) {
+      const path = `http://127.0.0.1:5000/posts/bet/${type}/${postID}`;
+      axios
+        .get(path)
+        .then(() => {
+          this.getPostsType("bets");
+        })
+        .catch((error) => {
+          console.error(error);
+          this.getPostsType("bets");
+        });
+    },
+    
+    changePostType(postID, type) {
+      const path = `http://127.0.0.1:5000/posts/${type}/${postID}`;
+      axios
+        .get(path)
+        .then(() => {
+          if (type == "post" || type == "bet"){
+            this.getPostsType("trash");
+          }
+          else if (type == "win" || type == "lose" ) {
+            this.getPostsType("bets");
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+          this.getPostsType("trash");
+        });
+    },
+  },
+  components:{
+    LabelEdit,
   },
 }
 </script>

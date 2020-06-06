@@ -1,5 +1,4 @@
 <template>
-  <div id="app">
     <div class="container">
       <h3>{{ title }}</h3>
       <div>
@@ -16,16 +15,16 @@
       <PostsList
       v-bind:posts="posts"
       v-bind:title="title"
+      v-bind:getPostsType="getPostsType"
+      v-bind:game_type="game_type"
       />
     </div>
-  </div>
 </template>
 
 <script>
 import axios from 'axios';
 import PostsList from '@/components/posts/PostsList'
 export default {
-  name: 'app',
   data() {
     return {
       posts: [],
