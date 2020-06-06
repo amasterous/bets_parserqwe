@@ -4,7 +4,6 @@
       <div class="col-sm-10">
         <h1>{{ title }}</h1>
         <div>
-
           <a href="#" @click="getPostsType('posts')">posts</a>
           <a class="ml-1" href="#" @click="getPostsType('bets')">bets</a>
           <a class="ml-1" href="#" @click="getPostsType('trash')">ALL POSTs</a>
