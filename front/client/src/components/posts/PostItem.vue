@@ -4,14 +4,6 @@
       <a :href="post.vk_link">{{ post.author }}</a>
         <p v-if="post.bet != 'null'">{{post.bet}}</p>
         <p v-if="post.coef != 'null'">{{post.coef}}</p>
-      <div v-if="post.coef == 'null' && post.type == 1">
-        <label-edit :text="coefChange.coef" id="labeledit1" v-on:text-updated-blur="coefUpdated" placeholder="click to enter coef"></label-edit>
-
-        <button
-        class = "btn btn-success btn-sm"
-        @click="coefupdate(post.id)"
-        >enter coef</button>
-      </div>
       <div v-if="post.bet == 'null' && post.type == 1">
         <label-edit :text="betChange.bet" id="labeledit2" v-on:text-updated-blur="betUpdated" placeholder="click to enter bet"></label-edit>
 
@@ -19,6 +11,14 @@
         class = "btn btn-success btn-sm"
         @click="betupdate(post.id)"
         >enter bet</button>
+      </div>
+      <div v-if="post.coef == 'null' && post.type == 1">
+        <label-edit :text="coefChange.coef" id="labeledit1" v-on:text-updated-blur="coefUpdated" placeholder="click to enter coef"></label-edit>
+
+        <button
+        class = "btn btn-success btn-sm"
+        @click="coefupdate(post.id)"
+        >enter coef</button>
       </div>
     </td>
     <td>
