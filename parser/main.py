@@ -101,21 +101,19 @@ while True:
                 row = app_init.Post.query.filter_by(time=m['date']) .first()
                 if not row:
                     Post1 = app_init.Post(
-                        'author': m['author'],
-                        'content': m['text'],
-                        'time': m['date'],
-                        'zahod': '0',
-                        'type': '0',
-                        'vk_link': m['vk_link'],
-                        'attachment_link': m['attachment_link'],
-                        'game': '0',
-                        'hltv_link': 'null',
-                        'bet': 'null',
-                        'coef': 'null',
+                        author= m['author'],
+                        content = m['text'],
+                        time = m['date'],
+                        zahod = '0',
+                        type = '0',
+                        vk_link = m['vk_link'],
+                        attachment_link = m['attachment_link'],
+                        game = '0',
+                        hltv_link = 'null',
+                        bet = 'null',
+                        coef = 'null',
                     )
                     values_list.append(Post1)
-                    values_list.append(Post2)
-                    values_list.append(Post3)
                 else:
                     print('next..')
 
@@ -126,10 +124,10 @@ while True:
         else:
             print('no new posts, waiting')
         # db_insert(posts)
-        # time.sleep(180)
 
 
-test_db_insert()
+    test_db_insert(posts)
+    time.sleep(180)
 # print(malish_posts)
 
 # tim = 1588263467
