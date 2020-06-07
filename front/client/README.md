@@ -3,6 +3,7 @@
 ## Project setup
 ```
 npm install
+npm install -g @vue/cli @vue/cli-service-global
 ```
 
 ### Compiles and hot-reloads for development
