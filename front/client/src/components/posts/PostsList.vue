@@ -14,9 +14,11 @@
             v-for="post in posts"
             v-bind:post="post"
             v-bind:title="title"
-            v-bind:key="post.time"
             v-bind:getPostsType="getPostsType"
             v-bind:game_type="game_type"
+
+
+            v-bind:key="post.time"
             />
         </tbody>
       </table>
@@ -29,6 +31,6 @@ export default {
   props: ['posts', 'title', 'game_type', 'getPostsType', 'game_type'],
   components: {
     PostItem
-  }
+  },
 }
 </script>

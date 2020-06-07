@@ -3,6 +3,7 @@ import config
 import db
 import time
 import os
+import app_init
 
 
 vk_session = vk_api.VkApi(config.LOGIN, config.PASSWORD)
@@ -56,44 +57,79 @@ while True:
     posts = [malish_posts, norch_posts, gagarin_posts]
     print('got posts')
 
-    def db_insert(massiv):
-        query = db.sqlalchemy.insert(db.posts)
-        values_list = []
-        for posts in massiv:
-            for m in posts:
-                isset_check = db.sqlalchemy.select([db.post]).where(
-                    db.post.columns.time == m['date'])
-                res = db.connection.execute(isset_check).fetchall()
-                if not res:
-                    values_list.append(
-                        {
-                            'author': m['author'],
-                            'content': m['text'],
-                            'time': m['date'],
-                            'zahod': '0',
-                            'type': '0',
-                            'vk_link': m['vk_link'],
-                            'attachment_link': m['attachment_link'],
-                            'game': '0',
-                            'hltv_link': 'null',
-                            'bet': 'null',
-                            'coef': 'null',
-                        }
-                    )
+    # def db_insert(massiv):
+    #     query = db.sqlalchemy.insert(db.posts)
+    #     values_list = []
+    #     for posts in massiv:
+    #         for m in posts:
+    #             isset_check = db.sqlalchemy.select([db.post]).where(
+    #                 db.post.columns.time == m['date'])
+    #             res = db.connection.execute(isset_check).fetchall()
+    #             if not res:
+    #                 values_list.append(
+    #                     {
+    #                         'author': m['author'],
+    #                         'content': m['text'],
+    #                         'time': m['date'],
+    #                         'zahod': '0',
+    #                         'type': '0',
+    #                         'vk_link': m['vk_link'],
+    #                         'attachment_link': m['attachment_link'],
+    #                         'game': '0',
+    #                         'hltv_link': 'null',
+    #                         'bet': 'null',
+    #                         'coef': 'null',
+    #                     }
+    #                 )
 
-        # print(values_list)
+
+
+
+    #     # print(values_list)
+    #     if values_list:
+    #         result = db.connection.execute(query, values_list)
+    #         print('added, waiting')
+    #     else:
+    #         print('no new posts, waiting')
+    #     # for r in result:
+    #     #     print(r)
+
+    def test_db_insert(massiv):
+        values_list = []
+        for posts in massiv: 
+            for m in posts:
+                row = app_init.Post.query.filter_by(time=m['date']) .first()
+                if not row:
+                    Post1 = app_init.Post(
+                        'author': m['author'],
+                        'content': m['text'],
+                        'time': m['date'],
+                        'zahod': '0',
+                        'type': '0',
+                        'vk_link': m['vk_link'],
+                        'attachment_link': m['attachment_link'],
+                        'game': '0',
+                        'hltv_link': 'null',
+                        'bet': 'null',
+                        'coef': 'null',
+                    )
+                    values_list.append(Post1)
+                    values_list.append(Post2)
+                    values_list.append(Post3)
+                else:
+                    print('next..')
+
         if values_list:
-            result = db.connection.execute(query, values_list)
+            app_init.db.session.add_all(values_list)
+            app_init.db.session.commit()
             print('added, waiting')
         else:
             print('no new posts, waiting')
-        # for r in result:
-        #     print(r)
-
-    db_insert(posts)
-    time.sleep(180)
+        # db_insert(posts)
+        # time.sleep(180)
 
 
+test_db_insert()
 # print(malish_posts)
 
 # tim = 1588263467

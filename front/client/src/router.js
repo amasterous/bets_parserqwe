@@ -1,10 +1,9 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-// import Ping from './components/Ping.vue';
+
 import Posts from './components/Posts.vue';
-// import HelloWorld from './components/HelloWorld.vue';
-import Test from './components/posts/Test.vue';
 import Pists from './components/Pists.vue';
+import Stats from './components/Stats.vue';
 
 Vue.use(Router);
 
@@ -21,6 +20,12 @@ export default new Router({
       name: 'Pists',
       component: Pists,
     },
+    {
+      path: '/stats',
+      name: 'Stats',
+      component: Stats,
+    },
+  
     // {
     //   path: '/ping',
     //   name: 'Ping',

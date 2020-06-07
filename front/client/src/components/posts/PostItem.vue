@@ -2,15 +2,24 @@
     <tr>
     <td>
       <a :href="post.vk_link">{{ post.author }}</a>
-      <div v-if="post.coef == 'null' && post.type != 0">
-        <label-edit :text="coefChange.coef" id="labeledit1" v-on:text-updated-blur="textUpdated" placeholder="Enter some text"></label-edit>
-
-        <button @click="idupdate(post.id)">update coef</button>
-      </div>
-        <br>
         <p v-if="post.bet != 'null'">{{post.bet}}</p>
-        <br>
         <p v-if="post.coef != 'null'">{{post.coef}}</p>
+      <div v-if="post.coef == 'null' && post.type == 1">
+        <label-edit :text="coefChange.coef" id="labeledit1" v-on:text-updated-blur="coefUpdated" placeholder="click to enter coef"></label-edit>
+
+        <button
+        class = "btn btn-success btn-sm"
+        @click="coefupdate(post.id)"
+        >enter coef</button>
+      </div>
+      <div v-if="post.bet == 'null' && post.type == 1">
+        <label-edit :text="betChange.bet" id="labeledit2" v-on:text-updated-blur="betUpdated" placeholder="click to enter bet"></label-edit>
+
+        <button
+        class = "btn btn-success btn-sm"
+        @click="betupdate(post.id)"
+        >enter bet</button>
+      </div>
     </td>
     <td>
       {{ post.content }}
@@ -93,30 +102,6 @@
       <a :href="post.hltv_link">hltv</a>
     </span> -->
 
-    <span v-if="post.type == '1' && post.bet == 'null'" class="ml-1 float-md-right">
-
-      <button
-        type="button"
-        class="btn btn-info btn-sm"
-        v-b-modal.addbet-modal
-        @click="betamountform(post.id)"
-      >
-      bet
-      </button>
-
-    </span>
-    <span v-if="post.type != '0' && post.coef == 'null'" class="float-md-right">
-
-      <button
-        type="button"
-        class="btn btn-info btn-sm"
-        v-b-modal.add-coef-modal
-        @click="addcoefform(post.id)"
-      >
-      coef 
-      </button>
-
-    </span>
     </td>
     <td>{{ post.time }}</td>
     <td>
@@ -204,6 +189,10 @@ export default {
       coefChange: {
         coef: '',
         id: '',
+      },
+      betChange: {
+        bet: '',
+        id: '',
       }
     }
   },
@@ -211,23 +200,62 @@ export default {
     initForm(){
       this.coefChange.coef='';
       this.coefChange.id='';
+      this.betChange.bet='';
+      this.betChange.id='';
     },
-    textUpdated: function(text){
-      // console.log(text)
-      // this.qwe = text;
-      console.log(text);
+    coefUpdated: function(text){
       this.coefChange.coef = text;
-      console.log(this.coefChange.coef)
     },
-    idupdate(id) { 
-      console.log('activated')
+    betUpdated: function(text){
+      this.betChange.bet = text;
+    },
+    coefupdate(id) { 
       this.coefChange.id = id;
-      const payload = {
-        post_id: this.coefChange.id,
-        coef: this.coefChange.coef,
+      if (this.coefChange.coef != ''){
+        console.log(this.coefChange.coef)
+        const payload = {
+          post_id: this.coefChange.id,
+          coef: this.coefChange.coef,
+        }
+        this.addCoef(payload)
+
       }
-      this.addCoef(payload)
+      else {
+        console.log("empty coef")
+      }
       this.initForm()
+    },
+    betupdate(id) { 
+      this.betChange.id = id;
+      if (this.betChange.bet != ''){
+        console.log(this.betChange.bet)
+        const payload = {
+          post_id: this.betChange.id,
+          amount: this.betChange.bet,
+        }
+        this.addBetAmount(payload)
+      }
+      else {
+        console.log("empty bet")
+      }
+      this.initForm()
+    },
+    addBetAmount(payload) {
+      const path = 'http://127.0.0.1:5000/posts/bet/amount'
+      axios
+        .post(path, payload)
+        .then(() => {
+          if (this.game_type == ''){
+          this.getPostsType("bets")
+          }
+          else {
+            this.getPostsType(this.game_type)
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          this.getPostsType("trash");
+        })
     },
     addCoef(payload) {
       const path = 'http://127.0.0.1:5000/posts/bet/coef'
@@ -238,7 +266,6 @@ export default {
           this.getPostsType("bets")
           }
           else {
-            console.log(this.game_type)
             this.getPostsType(this.game_type)
           }
         })
@@ -255,7 +282,7 @@ export default {
           this.getPostsType("bets");
         })
         .catch((error) => {
-          console.error(error);
+          console.log(error);
           this.getPostsType("bets");
         });
     },
@@ -273,7 +300,7 @@ export default {
           }
         })
         .catch((error) => {
-          console.error(error);
+          console.log(error);
           this.getPostsType("trash");
         });
     },

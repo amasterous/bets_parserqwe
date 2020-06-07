@@ -1,14 +1,14 @@
 <template>
     <div>
-      <Posts />
+      <Stats />
     </div>
 </template>
 
 <script>
-import Posts from '@/components/posts/Posts'
+import Stats from '@/components/stats/Stats'
 export default {
     components: {
-        Posts,
+        Stats,
     }
 }
 </script>

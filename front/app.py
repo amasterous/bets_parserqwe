@@ -47,17 +47,18 @@ def makeposts(data):
 def index():
     posts = Post.query.all()
     for post in posts:
+        post.bet = 'null'
+        post.type = 0
+        post.game = 0
+        post.zahod = 0
+        post.hltv_link = 'null'
         post.coef = 'null'
-    db.session.commit()
+    # db.session.commit()
     return jsonify({
         'status': 'success',
         'context': 'hello',
     })
 
-
-@app.route('/ping', methods=['GET'])
-def ping_pong():
-    return jsonify('pong!')
 
 
 # возвращает только ставки
@@ -329,6 +330,27 @@ def bet_coef():
         'result': result,
     })
 
+
+@app.route('/stats/main')
+def stats_main():
+    posts_count = db.session.query(Post).count()
+    malish_count = Post.query.filter_by(author='malish').count()
+    norch_count = Post.query.filter_by(author='norch').count()
+    gagarin_count = Post.query.filter_by(author='gagarin').count()
+
+    malish_win_bets = Post.query.filter_by(author='malish', zahod=1).count()
+    norch_win_bets = Post.query.filter_by(author='norch', zahod=1).count()
+    gagarin_win_bets = Post.query.filter_by(author='gagarin', zahod=1).count()
+
+    return jsonify({
+        'malish_count': malish_count,
+        'norch_counr': norch_count,
+        'gagarin_count': gagarin_count,
+        'posts_count': posts_count,
+        'malish_win_bets': malish_win_bets,
+        'norch_win_bets': norch_win_bets,
+        'gagarin_win_bets': gagarin_win_bets,
+    })
 
 
 if __name__ == '__main__':
