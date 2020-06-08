@@ -1,6 +1,7 @@
 <template>
     <div class="container">
       <h3>{{ title }}</h3>
+      <button v-on:click="reloadPage">refresh</button>
       <div>
         <a href="#" @click="getPostsType('posts')">posts</a>
         <a class="ml-1" href="#" @click="getPostsType('bets')">bets</a>
@@ -57,6 +58,9 @@ export default {
         .catch((error) => {
           console.error(error);
         });
+    },
+    reloadPage() {
+      this.getPostsType(this.title)
     },
   },
   created() {

@@ -197,6 +197,9 @@ export default {
     }
   },
   methods: {
+    // isInt(n) {
+    //   return Number(n) === n && n % 1 == 0; 
+    // },
     initForm(){
       this.coefChange.coef='';
       this.coefChange.id='';
@@ -212,13 +215,16 @@ export default {
     coefupdate(id) { 
       this.coefChange.id = id;
       if (this.coefChange.coef != ''){
-        console.log(this.coefChange.coef)
-        const payload = {
-          post_id: this.coefChange.id,
-          coef: this.coefChange.coef,
+        console.log(parseFloat(this.coefChange.coef))
+        const qwe = parseFloat(this.coefChange.coef)
+        if (!isNaN(qwe)){
+          console.log('asdded')
+          const payload = {
+            post_id: this.coefChange.id,
+            coef: this.coefChange.coef,
+          }
+          this.addCoef(payload)
         }
-        this.addCoef(payload)
-
       }
       else {
         console.log("empty coef")
@@ -228,15 +234,17 @@ export default {
     betupdate(id) { 
       this.betChange.id = id;
       if (this.betChange.bet != ''){
-        console.log(this.betChange.bet)
-        const payload = {
-          post_id: this.betChange.id,
-          amount: this.betChange.bet,
+        if (Number.isSafeInteger(parseInt(this.betChange.bet)) == true){
+          console.log(this.betChange.bet)
+          const payload = {
+            post_id: this.betChange.id,
+            amount: this.betChange.bet,
+          }
+          this.addBetAmount(payload)
         }
-        this.addBetAmount(payload)
       }
       else {
-        console.log("empty bet")
+        console.log("err with bet")
       }
       this.initForm()
     },
