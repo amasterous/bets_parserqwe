@@ -89,7 +89,7 @@
       <!-- {{ post.type }} -->
     </span>
     <span v-if="post.hltv_link == 'null' && post.type == '1' && game_type == 'csgo'" class="float-md-right">
-        <label-edit :text="hltvLinkAdd.link" id="labeledit3" v-on:text-updated-enter="hltvLinkUpdate" v-on:text-updated-blur="hltvLinkUpdate" placeholder="click to add hltv link"></label-edit>
+        <label-edit :text="hltvLinkAdd.link" id="labeledit3" v-on:text-updated-enter="hltvLinkUpdated" v-on:text-updated-blur="hltvLinkUpdated" placeholder="click to add hltv link"></label-edit>
 
         <button
         class = "btn btn-success btn-sm"
@@ -211,6 +211,7 @@ export default {
     betUpdated: function(text){
       this.betChange.bet = text;
     },
+
     coefupdate(id) { 
       this.coefChange.id = id;
       if (this.coefChange.coef != ''){
@@ -235,6 +236,9 @@ export default {
       if (this.hltvLinkAdd.link != '') {
         console.log(this.hltvLinkAdd.link)
       }
+    },
+    hltvLinkUpdate(id) {
+
     },
     betupdate(id) { 
       this.betChange.id = id;
