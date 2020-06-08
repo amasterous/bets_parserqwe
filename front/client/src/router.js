@@ -12,11 +12,11 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Posts',
-      component: Posts,
+      name: 'Pists',
+      component: Pists,
     },
     {
-      path: '/test',
+      path: '/posts',
       name: 'Pists',
       component: Pists,
     },

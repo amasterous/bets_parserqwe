@@ -89,7 +89,7 @@
       <!-- {{ post.type }} -->
     </span>
     <span v-if="post.hltv_link == 'null' && post.type == '1' && game_type == 'csgo'" class="float-md-right">
-        <label-edit :text="hltvLinkAdd.link" id="labeledit3" v-on:text-updated-enter="hltvLinkUpdated" v-on:text-updated-blur="hltvLinkUpdated" placeholder="click to add hltv link"></label-edit>
+        <label-edit :text="hltvLinkChange.link" id="labeledit3" v-on:text-updated-enter="hltvLinkUpdated" v-on:text-updated-blur="hltvLinkUpdated" placeholder="click to add hltv link"></label-edit>
 
         <button
         class = "btn btn-success btn-sm"
@@ -160,7 +160,7 @@
     </div>
     
     <div v-if="post.hltv_link != 'null'">
-      <a :href="post.hltv_link">hltv</a>
+      <a :href="post.hltv_link" target="_blank" rel="noopener noreferrer" >hltv</a>
     </div>
     <!-- <td>{{ post.zahod }}</td> -->
 
@@ -192,24 +192,41 @@ export default {
         bet: '',
         id: '',
       },
-      hltvLinkAdd: {
+      hltvLinkChange: {
         link: '',
         id: '',
       }
     }
   },
   methods: {
+    validURL(str) {
+      var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+        '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+        '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+        '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+      return !!pattern.test(str);
+    },
     initForm(){
       this.coefChange.coef='';
       this.coefChange.id='';
       this.betChange.bet='';
       this.betChange.id='';
+      this.hltvLinkChange.link='';
+      this.hltvLinkChange.id='';
     },
+
     coefUpdated: function(text){
       this.coefChange.coef = text;
     },
+
     betUpdated: function(text){
       this.betChange.bet = text;
+    },
+
+    hltvLinkUpdated: function(text) {
+      this.hltvLinkChange.link = text
     },
 
     coefupdate(id) { 
@@ -231,15 +248,41 @@ export default {
       }
       this.initForm()
     },
-    hltvLinkSubmit(post_id) {
-      this.hltvLinkAdd.id = post_id;
-      if (this.hltvLinkAdd.link != '') {
-        console.log(this.hltvLinkAdd.link)
+    addHltvLink(id){
+      this.hltvLinkChange.id = id;
+      if (this.hltvLinkChange.link != ''){
+        if (this.validURL(this.hltvLinkChange.link)){
+          console.log(this.hltvLinkChange.link)
+          const payload = {
+            post_id: this.hltvLinkChange.id,
+            hltv_link: this.hltvLinkChange.link,
+          }
+          console.log(payload)
+          this.addHltvLinkFinal(payload)
+        }
+        else{
+          console.log('invalid url')
+        }
       }
-    },
-    hltvLinkUpdate(id) {
+      else {
+        console.log("empty hltv link")
+      }
+      this.initForm()
 
     },
+    addHltvLinkFinal(payload) {
+      const path = 'http://127.0.0.1:5000/posts/bet/csgo/hltv'
+      axios
+        .post(path, payload)
+        .then(() => {
+          this.getPostsType("bets")
+        })
+        .catch((error) => {
+          console.log(error);
+          this.getPostsType("trash");
+        })
+    },
+    
     betupdate(id) { 
       this.betChange.id = id;
       if (this.betChange.bet != ''){

@@ -4,7 +4,7 @@
       <div class="container">
         <h3>
           <a href="/stats">stats</a>
-          <a href="/test" class="ml-1">bets</a>
+          <a href="/posts" class="ml-1">bets</a>
         </h3>
       </div>
       <hr>
