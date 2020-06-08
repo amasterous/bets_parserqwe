@@ -5,7 +5,7 @@
         <p v-if="post.bet != 'null'">{{post.bet}}</p>
         <p v-if="post.coef != 'null'">{{post.coef}}</p>
       <div v-if="post.bet == 'null' && post.type == 1">
-        <label-edit :text="betChange.bet" id="labeledit2" v-on:text-updated-blur="betUpdated" placeholder="click to enter bet"></label-edit>
+        <label-edit :text="betChange.bet" id="labeledit2" v-on:text-updated-enter="betUpdated" v-on:text-updated-blur="betUpdated" placeholder="click to enter bet"></label-edit>
 
         <button
         class = "btn btn-success btn-sm"
@@ -13,7 +13,7 @@
         >enter bet</button>
       </div>
       <div v-if="post.coef == 'null' && post.type == 1">
-        <label-edit :text="coefChange.coef" id="labeledit1" v-on:text-updated-blur="coefUpdated" placeholder="click to enter coef"></label-edit>
+        <label-edit :text="coefChange.coef" id="labeledit1" v-on:text-updated-enter="coefUpdated" v-on:text-updated-blur="coefUpdated" placeholder="click to enter coef"></label-edit>
 
         <button
         class = "btn btn-success btn-sm"
@@ -89,14 +89,12 @@
       <!-- {{ post.type }} -->
     </span>
     <span v-if="post.hltv_link == 'null' && post.type == '1' && game_type == 'csgo'" class="float-md-right">
-      <button
-        type="button"
-        class="btn btn-info btn-sm ml-1"
-        v-b-modal.hltv-modal
-        @click="hltvform(post.id)"
-      >
-      hltv 
-      </button>
+        <label-edit :text="hltvLinkAdd.link" id="labeledit3" v-on:text-updated-enter="hltvLinkUpdate" v-on:text-updated-blur="hltvLinkUpdate" placeholder="click to add hltv link"></label-edit>
+
+        <button
+        class = "btn btn-success btn-sm"
+        @click="addHltvLink(post.id)"
+        >add link</button>
     </span>
     <!-- <span v-else-if="post.hltv_link != 'null'">
       <a :href="post.hltv_link">hltv</a>
@@ -182,7 +180,7 @@ export default {
     title:{},
     game_type:{},
     getPostsType: {},
-    game_type: {},
+
   },
   data () {
     return {
@@ -193,13 +191,14 @@ export default {
       betChange: {
         bet: '',
         id: '',
+      },
+      hltvLinkAdd: {
+        link: '',
+        id: '',
       }
     }
   },
   methods: {
-    // isInt(n) {
-    //   return Number(n) === n && n % 1 == 0; 
-    // },
     initForm(){
       this.coefChange.coef='';
       this.coefChange.id='';
@@ -230,6 +229,12 @@ export default {
         console.log("empty coef")
       }
       this.initForm()
+    },
+    hltvLinkSubmit(post_id) {
+      this.hltvLinkAdd.id = post_id;
+      if (this.hltvLinkAdd.link != '') {
+        console.log(this.hltvLinkAdd.link)
+      }
     },
     betupdate(id) { 
       this.betChange.id = id;

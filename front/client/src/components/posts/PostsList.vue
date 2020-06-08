@@ -7,7 +7,7 @@
           <tr>
             <th style="min-width:250px;" scope="col">author</th>
             <th scope="col">content</th>
-            <th scope="col">time</th>
+            <th style="min-width:100px;" scope="col">time</th>
             <th scope="col">other</th>
           </tr>
         </thead>

@@ -21,7 +21,7 @@ def makeposts(data):
     POSTS = []
     for ins in data:
         time = datetime.datetime.fromtimestamp(ins.time)
-        time = time.strftime('%d-%m-%Y %H:%M:%S')
+        time = time.strftime('%d-%B-%Y %H:%M:%S')
 
         POSTS.append(
             {
