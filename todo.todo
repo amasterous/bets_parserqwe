@@ -7,8 +7,8 @@ Todos:
     ☐ парсить текущие + будущие игры по доте
 
   Done:
+    ✔ bets->csgo->win должно кидать в bets, но кидает в all posts @done(20-06-08 18:32)
 
   Cancelled:
 
   Need to fix:
-    ☐ bets->csgo->win должно кидать в bets, но кидает в all posts

@@ -1,7 +1,13 @@
 <template>
     <div class="container">
-      <h3>{{ title }}</h3>
-      <button v-on:click="reloadPage">refresh</button>
+      <div class="row">
+        <div class="col-sm-1">
+          <h3>{{ title }}</h3>
+        </div>
+        <div class="col ml-2">
+          <button class="btn btn-info ml-3" v-on:click="reloadPage">refresh</button>
+        </div>
+      </div>
       <div>
         <a href="#" @click="getPostsType('posts')">posts</a>
         <a class="ml-1" href="#" @click="getPostsType('bets')">bets</a>
@@ -9,8 +15,8 @@
       </div>
       <hr />
       <div v-if="title == 'bets'">
-        <a href="#" @click="getPostsType('csgo', false)">csgo</a>
-        <a class="ml-1" href="#" @click="getPostsType('dota', false)">dota 2</a>
+        <a href="#" @click="getPostsType('bets', 'csgo')">csgo</a>
+        <a class="ml-1" href="#" @click="getPostsType('bets', 'dota')">dota 2</a>
       </div>
 
       <PostsList
@@ -31,29 +37,43 @@ export default {
       posts: [],
       title: '',
       game_type: '',
+      path: '',
     }
   },
   components: {
     PostsList,
   },
   methods:{
-    getPostsType(type, changetype = true) {
-      const path = `http://127.0.0.1:5000/${type}`;
+    getPostsType(type, game='') {
+      this.path = `http://127.0.0.1:5000/${type}`;
+      if (type == "bets"){
+        console.log('first if')
+        if (this.game_type != '') {
+          console.log('second if')
+          this.title = 'bets';
+          this.path = `http://127.0.0.1:5000/${this.game_type}`;
+        }
+        else {
+          console.log('first else')
+          this.title = 'bets';
+          this.path = `http://127.0.0.1:5000/${type}`;
+        }
+      }
+      else {
+        console.log('last else')
+        this.title = type
+        this.path = `http://127.0.0.1:5000/${type}`;
+      }
+      if (type == "bets" && game != ''){
+          this.title = 'bets';
+          this.game_type = game
+          this.path = `http://127.0.0.1:5000/${this.game_type}`;
+      }
       axios
-        .get(path)
+        .get(this.path)
         .then(res => {
-          if (changetype == true) {
-            this.title = type;
-          }
-          if (type == "dota" || type == "csgo") {
-            this.game_type = type;
-            this.title = 'bets'
-          }
-          else {
-            this.game_type = '';
-          }
           this.posts = res.data.posts;
-          console.log(path);
+          console.log(this.path);
         })
         .catch((error) => {
           console.error(error);
@@ -64,7 +84,7 @@ export default {
     },
   },
   created() {
-    this.getPostsType("trash");
+    this.getPostsType("bets");
   },
 }
 </script>
