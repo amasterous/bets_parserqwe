@@ -47,20 +47,16 @@ export default {
     getPostsType(type, game='') {
       this.path = `http://127.0.0.1:5000/${type}`;
       if (type == "bets"){
-        console.log('first if')
         if (this.game_type != '') {
-          console.log('second if')
           this.title = 'bets';
           this.path = `http://127.0.0.1:5000/${this.game_type}`;
         }
         else {
-          console.log('first else')
           this.title = 'bets';
           this.path = `http://127.0.0.1:5000/${type}`;
         }
       }
       else {
-        console.log('last else')
         this.title = type
         this.path = `http://127.0.0.1:5000/${type}`;
       }

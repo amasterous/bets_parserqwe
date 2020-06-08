@@ -253,12 +253,7 @@ export default {
       axios
         .post(path, payload)
         .then(() => {
-          if (this.game_type == ''){
           this.getPostsType("bets")
-          }
-          else {
-            this.getPostsType(this.game_type)
-          }
         })
         .catch((error) => {
           console.log(error);
