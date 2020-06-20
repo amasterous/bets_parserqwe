@@ -45,18 +45,21 @@ def makeposts(data):
 # функциональный машрурт
 @app.route('/')
 def index():
-    posts = Post.query.all()
-    for post in posts:
-        post.bet = 'null'
-        post.type = 0
-        post.game = 0
-        post.zahod = 0
-        post.hltv_link = 'null'
-        post.coef = 'null'
+    asd = 'nul'
+    # posts = Post.query.all()
+    # for post in posts:
+    #     post.bet = 'null'
+    #     post.type = 0
+    #     post.game = 0
+    #     post.zahod = 0
+    #     post.hltv_link = 'null'
+    #     post.coef = 'null'
     # db.session.commit()
+
     return jsonify({
         'status': 'success',
         'context': 'hello',
+        'asd': asd,
     })
 
 
@@ -334,22 +337,38 @@ def bet_coef():
 @app.route('/stats/main')
 def stats_main():
     posts_count = db.session.query(Post).count()
-    malish_count = Post.query.filter_by(author='malish').count()
-    norch_count = Post.query.filter_by(author='norch').count()
-    gagarin_count = Post.query.filter_by(author='gagarin').count()
+    bets_count = Post.query.filter_by(type=1).count()
 
-    malish_win_bets = Post.query.filter_by(author='malish', zahod=1).count()
-    norch_win_bets = Post.query.filter_by(author='norch', zahod=1).count()
-    gagarin_win_bets = Post.query.filter_by(author='gagarin', zahod=1).count()
+    winbets_count = Post.query.filter_by(zahod=1).count()
+    losebets_count = Post.query.filter_by(zahod=2).count()
+    winrate = winbets_count/(winbets_count+losebets_count)*100
+    winrate = "%.2f" % (winrate)
+
+    # schitau avg coeffficient
+    cefscount = Post.query.filter(Post.coef!='null').count()
+    allcefs = Post.query.filter(Post.coef!='null').all()
+    coefssum = 0
+    for a in allcefs:
+        coefssum += float(a.coef)
+    avgcoef = "%.2f" % (coefssum/cefscount)
+
+    # schitau avg betamount
+    betscount = Post.query.filter(Post.bet!='null').count()
+    allbets = Post.query.filter(Post.bet!='null').all()
+    betssum = 0
+    for a in allbets:
+        betssum += int(a.bet)
+    avgbetamount = "%d" % (betssum/betscount)
+
 
     return jsonify({
-        'malish_count': malish_count,
-        'norch_counr': norch_count,
-        'gagarin_count': gagarin_count,
         'posts_count': posts_count,
-        'malish_win_bets': malish_win_bets,
-        'norch_win_bets': norch_win_bets,
-        'gagarin_win_bets': gagarin_win_bets,
+        'bets_count': bets_count,
+        'winbets_count': winbets_count,
+        'losebets_count': losebets_count,
+        'avgcoef': avgcoef,
+        'winrate': winrate, 
+        'avgbetamount': avgbetamount,
     })
 
 

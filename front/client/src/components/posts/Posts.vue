@@ -72,7 +72,7 @@ export default {
           console.log(this.path);
         })
         .catch((error) => {
-          console.error(error);
+          console.log(error);
         });
     },
     reloadPage() {

@@ -1,14 +1,14 @@
 <template>
     <div>
-      <Stats />
+      <StatsMain />
     </div>
 </template>
 
 <script>
-import Stats from '@/components/stats/Stats'
+import StatsMain from '@/components/stats/StatsMain'
 export default {
     components: {
-        Stats,
+        StatsMain,
     }
 }
 </script>
