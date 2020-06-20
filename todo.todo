@@ -1,10 +1,8 @@
 Todos:
   Need to do:
-    ☐ sdelat' obschyu statistiky @started(20-06-20 03:07)
-      posts count+bets count+win count+lose count+wnirate+avgcef+avgbetamount
     
     ☐ парсить текущие + будущие игры с хлтв
-    ☐ парсить текущие + будущие игры по дотe
+    ☐ парсить текущие + будущие игры по дот
 
     ☐ сделать оповещение о новых ставках в вк
 
@@ -23,6 +21,8 @@ Todos:
     ✔ bets->csgo->win должно кидать в bets, но кидает в all posts @done(20-06-08 18:32)
     ✔ сделать сортировку, чтобы посты без ставки/кефа/ссылки на хлтв показывались сверху @started(20-06-08 19:00) @done(20-06-08 19:44) @lasted(44m8s)
     ✔ пофиксить добавление ссылки хлтв @started(20-06-08 19:51) @done(20-06-09 00:02) @lasted(4h11m58s)
+    ✔ sdelat' obschyu statistiky @started(20-06-20 03:07) @done(20-06-20 09:30) @lasted(6h23m21s)
+      posts count+bets count+win count+lose count+wnirate+avgcef+avgbetamount
 
   Cancelled:
 
