@@ -1,9 +1,9 @@
 <template>
   <div class="container">
     <h1>Hello it is statistic section</h1>
-    <a href="">malish</a>
-    <a href="" class="ml-2">norch</a>
-    <a href="" class="ml-2">gagarin</a>
+    <a href="#">malish</a>
+    <a href="#" class="ml-2">norch</a>
+    <a href="#" class="ml-2">gagarin</a>
     <ul>
       <li>posts count: {{this.stats.posts_count}}</li>
       <li>bets count: {{this.stats.bets_count}}</li>

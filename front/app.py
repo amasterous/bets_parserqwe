@@ -15,6 +15,7 @@ GAMES = [
     ['1', 'dota'],
     ['2', 'csgo']
 ]
+ITEMS_PER_PAGE = 15
 
 
 def makeposts(data):
@@ -371,6 +372,32 @@ def stats_main():
         'avgbetamount': avgbetamount,
     })
 
+@app.route('/supertest')
+def supertest():
+    all_items_count = db.session.query(Post).count()
+    total_pages = all_items_count/ITEMS_PER_PAGE
+    if all_items_count % ITEMS_PER_PAGE != 0:
+        total_pages = int(total_pages) + 1
+    page = request.args.get('page', default=1, type=int)
+    if page > total_pages or page <= 0:
+        return jsonify({
+            'status': 'failure',
+            'error': 'this page doesnt exist'
+        })
+    res = Post.query.order_by(Post.id).limit(ITEMS_PER_PAGE).offset(0)
+    if page != 1:
+        usepage = page - 1
+        res = Post.query.order_by(Post.id).limit(ITEMS_PER_PAGE).offset(usepage*ITEMS_PER_PAGE)
+
+    
+    POSTS = makeposts(res)
+    return jsonify({
+        'status': 'success',
+        'posts': POSTS,
+        'count': len(POSTS),
+        'page': page,
+        'tot': total_pages
+    })
 
 if __name__ == '__main__':
     app.run()
