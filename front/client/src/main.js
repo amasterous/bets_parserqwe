@@ -5,7 +5,10 @@ import Vue from 'vue';
 import BootstrapVue from 'bootstrap-vue';
 import App from './App.vue';
 import router from './router';
+import infiniteScroll from 'vue-infinite-scroll'
 
+
+Vue.use(infiniteScroll)
 Vue.use(BootstrapVue)
 
 Vue.config.productionTip = false;

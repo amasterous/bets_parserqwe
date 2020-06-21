@@ -389,6 +389,13 @@ def supertest():
         usepage = page - 1
         res = Post.query.order_by(Post.id).limit(ITEMS_PER_PAGE).offset(usepage*ITEMS_PER_PAGE)
 
+    next_page = page + 1
+    if page == total_pages:
+        next_page = 0
+    prev_page = page - 1
+    if prev_page <= 0:
+        prev_page = 0
+
     
     POSTS = makeposts(res)
     return jsonify({
@@ -396,7 +403,9 @@ def supertest():
         'posts': POSTS,
         'count': len(POSTS),
         'page': page,
-        'tot': total_pages
+        'total_pages': total_pages,
+        'next_page': next_page,
+        'prev_page': prev_page,
     })
 
 if __name__ == '__main__':
