@@ -1,12 +1,12 @@
 <template>
   <div class="container">
-      <h2>This page: {{ data.page }}</h2>
+      <!-- <h2>This page: {{ data.page }}</h2>
       <h2 v-if="data.next_page != 0">Next page {{ data.next_page }}</h2>
       <h2 v-if="data.prev_page != 0">Prev page {{ data.prev_page }}</h2>
-      <h2>Last page: {{ data.total_pages }}</h2>
+      <h2>Last page: {{ data.total_pages }}</h2> -->
 
-      <a :href="'?page=' + (Number(page)+1)" v-if="data.next_page !=0">next page</a><br>
-      <a :href="'?page=' + (Number(page)-1)" v-if="data.prev_page !=0">prev page</a><br>
+      <!-- <a :href="'?page=' + (Number(page)+1)" v-if="data.next_page !=0">next page</a><br>
+      <a :href="'?page=' + (Number(page)-1)" v-if="data.prev_page !=0">prev page</a><br> -->
 
       <!-- <a href="#" @click="changePage(page+1)" v-if="data.next_page !=0">next page</a><br>
       <a href="#" @click="changePage(page-1)" v-if="data.prev_page !=0">prev page</a> -->
