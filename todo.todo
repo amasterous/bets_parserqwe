@@ -10,6 +10,7 @@ Todos:
     ☐ Если игра закончилась парсить результат и счёт
 
     ☐ sdelat' paginaciu @high @started(20-06-20 09:33)
+      
     ☐ sdelat' uvelichenit kartinki po nazhatiu
 
 
@@ -27,4 +28,5 @@ Todos:
   Cancelled:
 
   Need to fix:
+    ☐ pofixit pagginatiu(ne obnulyaestya this.page kogda perehodish mezhdu bets/trash/posts)
 
