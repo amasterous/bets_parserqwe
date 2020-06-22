@@ -24,7 +24,7 @@ export default {
   name: 'App',
   data() {
     return {
-      pageType: 2,
+      pageType: 0,
     }
   },
   components: {

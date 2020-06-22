@@ -63,60 +63,122 @@ def index():
         'asd': asd,
     })
 
+@app.route('/<game_type>')
+def get_posts(game_type):
+    if game_type.lower() == 'dota':
+        # res = Post.query.filter_by(game=1).order_by(Post.time.desc()).all()
+        res = Post.query.filter_by(game=1).order_by(Post.id).all()
+    elif game_type.lower() == 'csgo':
+        # res = Post.query.filter_by(game=2).order_by(Post.time.desc()).all()
+        res = Post.query.filter_by(game=2).order_by(Post.id).all()
+    elif game_type.lower() == 'bets':
+        # res = Post.query.filter_by(type=1, game=0).order_by(Post.time.desc()).all()
+        res = Post.query.filter_by(type=1).order_by(Post.id).all()
+    elif game_type.lower() == 'posts':
+        # res = Post.query.filter_by(type=2).order_by(Post.time.desc()).all()
+        res = Post.query.filter_by(type=2).order_by(Post.id).all()
+    elif game_type.lower() == 'trash':
+        # res = Post.query.filter_by(type=0).order_by(Post.time.desc()).all()
+        res = Post.query.filter_by(type=0).order_by(Post.id).all()
+    else: 
+        # res = Post.query.filter_by(type=0).order_by(Post.time.desc()).all()
+        res = Post.query.filter_by(type=0).order_by(Post.id).all()
 
 
-# возвращает только ставки
-@app.route('/bets')
-def all_bets():
-    res = Post.query.filter_by(type=1, game=0).order_by(Post.time.desc()).all()
-    POSTS = makeposts(res)
+    start = 0
+    end = 0
+    all_items_count = len(res)
+    total_pages = all_items_count/ITEMS_PER_PAGE
+    if all_items_count % ITEMS_PER_PAGE != 0:
+        total_pages = int(total_pages) + 1
+    page = request.args.get('page', default=1, type=int)
+    if page > total_pages or page <= 0:
+        return jsonify({
+            'status': 'failure',
+            'error': 'this page doesnt exist'
+        })
+    end_res = res[:ITEMS_PER_PAGE]
+    if page != 1:
+        start = (int(page)-1)*ITEMS_PER_PAGE
+        end = page*ITEMS_PER_PAGE
+
+        # usepage = page - 1
+        # res = Post.query.order_by(Post.id).limit(ITEMS_PER_PAGE).offset(usepage*ITEMS_PER_PAGE)
+        end_res = res[start:end]
+
+    next_page = page + 1
+    if page == total_pages:
+        next_page = 0
+    prev_page = page - 1
+    if prev_page <= 0:
+        prev_page = 0
+
+    POSTS = makeposts(end_res)
     return jsonify({
         'status': 'success',
         'posts': POSTS,
+        'count': len(POSTS),
+        'page': page,
+        'total_pages': total_pages,
+        'next_page': next_page,
+        'prev_page': prev_page,
+        'start': start,
+        'end': end,
     })
 
 
-@app.route('/dota')
-def all_dota():
-    res = Post.query.filter_by(game=1).order_by(Post.time.desc()).all()
-    POSTS = makeposts(res)
-    return jsonify({
-        'status': 'success',
-        'posts': POSTS,
-    })
+# # возвращает только ставки
+# @app.route('/bets')
+# def all_bets():
+#     res = Post.query.filter_by(type=1, game=0).order_by(Post.time.desc()).all()
+#     POSTS = makeposts(res)
+#     return jsonify({
+#         'status': 'success',
+#         'posts': POSTS,
+#     })
 
 
-@app.route('/csgo')
-def all_csgo():
-    res = Post.query.filter_by(game=2).order_by(Post.time.desc()).all()
-    POSTS = makeposts(res)
-    return jsonify({
-        'status': 'success',
-        'posts': POSTS,
-    })
-
-# возвращает все посты
+# @app.route('/dota')
+# def all_dota():
+#     res = Post.query.filter_by(game=1).order_by(Post.time.desc()).all()
+#     POSTS = makeposts(res)
+#     return jsonify({
+#         'status': 'success',
+#         'posts': POSTS,
+#     })
 
 
-@app.route('/trash')
-def all_trash():
-    res = Post.query.filter_by(type=0).order_by(Post.time.desc()).all()
-    POSTS = makeposts(res)
-    return jsonify({
-        'status': 'success',
-        'posts': POSTS,
-    })
+# @app.route('/csgo')
+# def all_csgo():
+#     res = Post.query.filter_by(game=2).order_by(Post.time.desc()).all()
+#     POSTS = makeposts(res)
+#     return jsonify({
+#         'status': 'success',
+#         'posts': POSTS,
+#     })
+
+# # возвращает все посты
 
 
-# машрут возвращает посты с типом post
-@app.route('/posts', methods=['GET'])
-def all_posts():
-    res = Post.query.filter_by(type=2).order_by(Post.time.desc()).all()
-    POSTS = makeposts(res)
-    return jsonify({
-        'status': 'success',
-        'posts': POSTS,
-    })
+# @app.route('/trash')
+# def all_trash():
+#     res = Post.query.filter_by(type=0).order_by(Post.time.desc()).all()
+#     POSTS = makeposts(res)
+#     return jsonify({
+#         'status': 'success',
+#         'posts': POSTS,
+#     })
+
+
+# # машрут возвращает посты с типом post
+# @app.route('/posts', methods=['GET'])
+# def all_posts():
+#     res = Post.query.filter_by(type=2).order_by(Post.time.desc()).all()
+#     POSTS = makeposts(res)
+#     return jsonify({
+#         'status': 'success',
+#         'posts': POSTS,
+#     })
 
 
 # маршрут чтобы поставить ставке тип win

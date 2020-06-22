@@ -1,6 +1,7 @@
 <template>
     <tr>
     <td>
+      <h1>{{post.id}}</h1>
       <a :href="post.vk_link">{{ post.author }}</a>
         <p v-if="post.bet != 'null'">{{post.bet}}</p>
         <p v-if="post.coef != 'null'">{{post.coef}}</p>

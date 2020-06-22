@@ -80,7 +80,7 @@ export default {
     },
   },
   created() {
-    this.getPostsType("bets");
+    this.getPostsType("posts");
   },
 }
 </script>
