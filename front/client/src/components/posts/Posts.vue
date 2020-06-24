@@ -23,9 +23,6 @@
       v-bind:title="title"
       v-bind:getPostsType="getPostsType"
       v-bind:game_type="game_type"
-      v-bind:page="page"
-      v-bind:last_page="last_page"
-      v-bind:busy="busy"
       />
     </div>
 </template>
@@ -40,9 +37,6 @@ export default {
       title: '',
       game_type: '',
       path: '',
-      page: 1,
-      last_page: 10000,
-      busy: false,
     }
   },
   components: {
@@ -50,7 +44,6 @@ export default {
   },
   methods:{
     getPostsType(type, game='') {
-      this.page=1
       this.path = `http://127.0.0.1:5000/${type}`;
       if (type == "bets"){
         if (this.game_type != '') {
@@ -75,7 +68,6 @@ export default {
         .get(this.path)
         .then(res => {
           this.posts = res.data.posts;
-          console.log(this.last_page)
           console.log(this.path);
         })
         .catch((error) => {

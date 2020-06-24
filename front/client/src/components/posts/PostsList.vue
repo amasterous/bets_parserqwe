@@ -12,7 +12,6 @@
           </tr>
         </thead>
         <tbody>
-        <div v-infinite-scroll="this.loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
             <PostItem 
             v-for="post in sortedPosts"
             v-bind:post="post"
@@ -25,7 +24,6 @@
 
             v-bind:key="post.time"
             />
-            </div>
         </tbody>
       </table>
     </div>
@@ -35,7 +33,7 @@
 import PostItem from '@/components/posts/PostItem'
 import axios from 'axios';
 export default {
-  props: ['posts', 'busy', 'page', 'title', 'getPostsType', 'game_type'],
+  props: ['posts', 'title', 'getPostsType', 'game_type'],
   components: {
     PostItem
   },
@@ -46,34 +44,6 @@ export default {
     }
   },
   methods: {
-    loadMore() {
-      this.busy = true
-      var pathforpage = `http://127.0.0.1:5000/${this.title}?page=${this.page}`
-      if (this.game_type!= ''){
-        pathforpage = `http://127.0.0.1:5000/${this.game_type}?page=${this.page}`
-      }
-      this.page++
-      axios
-        .get(pathforpage)
-        .then(res => {
-          var pists = res.data.posts
-          if (this.page <= res.data.total_pages){
-            this.posts.push(...pists)
-            this.busy = false
-          }
-          else{
-            this.busy=true
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-        
-        // console.log(qwe)
-        // this.posts.push(...qwe)
-      
-      
-    },
     // TODO: сделано очень плохо) надо посмотреть потом как это можно сделать лучше.
     checkSortBet: function (casee) {
       console.log(this.sortParam)
