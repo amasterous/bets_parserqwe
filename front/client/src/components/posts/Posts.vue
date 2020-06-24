@@ -37,6 +37,8 @@ export default {
       title: '',
       game_type: '',
       path: '',
+      total_pages: '',
+      page: '',
     }
   },
   components: {

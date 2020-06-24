@@ -18,9 +18,6 @@
             v-bind:title="title"
             v-bind:getPostsType="getPostsType"
             v-bind:game_type="game_type"
-            
-            
-
 
             v-bind:key="post.time"
             />
