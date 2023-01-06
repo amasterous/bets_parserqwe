@@ -12,13 +12,13 @@
     "bootstrap": "^4.5.0",
     "bootstrap-vue": "^2.15.0",
     "core-js": "^3.6.5",
-    "label-edit": "^0.1.0",
+    "label-edit": "^1.0.4",
     "vue": "^2.6.11",
     "vue-router": "^3.3.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.4.1",
-    "@vue/cli-service": "^4.4.1",
+    "@vue/cli-service": "^5.0.8",
     "@vue/eslint-config-airbnb": "^5.0.2",
     "vue-template-compiler": "^2.6.11"
   },
